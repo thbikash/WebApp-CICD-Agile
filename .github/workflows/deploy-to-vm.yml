@@ -1,4 +1,4 @@
-name: Deploy Node.js to Azure VM
+name: Deploy Node.js Application to Azure VM
 
 on:
   push:
