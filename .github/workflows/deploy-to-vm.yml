@@ -1,0 +1,26 @@
+name: Deploy Node.js to Azure VM
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to VM via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_KEY }}
+          script: |
+            cd /home/azureuser/WebApp-CICD-Agile || git clone https://github.com/thbikash/WebApp-CICD-Agile.git
+            cd WebApp-CICD-Agile
+            git pull
+            npm install
+            pm2 restart app || pm2 start server.js --name WebApp-CICD-Agile
